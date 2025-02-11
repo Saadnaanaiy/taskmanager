@@ -15,7 +15,7 @@ const Signup = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        'http://localhost:5001/api/auth/register',
+        'https://taskmanager-olxx.onrender.com/api/auth/register',
         values,
       );
       message.success('Registration successful! Welcome aboard.');
