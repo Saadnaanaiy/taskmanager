@@ -20,7 +20,7 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5001/api/auth/profile', {
+        const res = await axios.get('https://taskmanager-server-pysb.onrender.com/api/auth/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data.user);
@@ -38,7 +38,7 @@ const ProfilePage = () => {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.put(
-        'http://localhost:5001/api/auth/profile',
+        'https://taskmanager-server-pysb.onrender.com/api/auth/profile',
         updatedUser,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -62,7 +62,7 @@ const ProfilePage = () => {
       onOk: async () => {
         try {
           const token = localStorage.getItem('token');
-          await axios.delete('http://localhost:5001/api/auth/profile', {
+          await axios.delete('https://taskmanager-server-pysb.onrender.com/api/auth/profile', {
             headers: { Authorization: `Bearer ${token}` },
           });
           message.success('Account deleted!');
