@@ -28,7 +28,7 @@ function Home() {
   const fetchNotes = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('http://localhost:5001/api/note', {
+      const { data } = await axios.get('https://taskmanager-olxx.onrender.com/api/note', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -65,7 +65,7 @@ function Home() {
     setLoading(true);
     try {
       const response = await axios.post(
-        'http://localhost:5001/api/note/add',
+        'https://taskmanager-olxx.onrender.com/api/note/add',
         { title, desc, tags, date },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -87,7 +87,7 @@ function Home() {
   const editNote = async (id, title, desc, date, tags) => {
     try {
       const response = await axios.put(
-        `http://localhost:5001/api/note/${id}`,
+        `https://taskmanager-olxx.onrender.com/api/note/${id}`,
         { title, desc, tags, date },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -110,7 +110,7 @@ function Home() {
   const handleDeleteNote = async (noteId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5001/api/note/${noteId}`,
+        `https://taskmanager-olxx.onrender.com/api/note/${noteId}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
