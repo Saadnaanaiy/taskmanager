@@ -26,7 +26,7 @@ function Home() {
   const fetchNotes = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('https://taskmanager-olxx.onrender.com/api/note', {
+      const { data } = await axios.get('https://taskmanager-server-pysb.onrender.com/api/note', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -63,7 +63,7 @@ function Home() {
     setLoading(true);
     try {
       const response = await axios.post(
-        'https://taskmanager-olxx.onrender.com/api/note/add',
+        'https://taskmanager-server-pysb.onrender.com/api/note/add',
         { title, desc, tags, date },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -85,7 +85,7 @@ function Home() {
   const editNote = async (id, title, desc, date, tags) => {
     try {
       const response = await axios.put(
-        `https://taskmanager-olxx.onrender.com/api/note/${id}`,
+        `https://taskmanager-server-pysb.onrender.com/api/note/${id}`,
         { title, desc, tags, date },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
@@ -108,7 +108,7 @@ function Home() {
   const handleDeleteNote = async (noteId) => {
     try {
       const response = await axios.delete(
-        `https://taskmanager-olxx.onrender.com/api/note/${noteId}`,
+        `https://taskmanager-server-pysb.onrender.com/api/note/${noteId}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         },
