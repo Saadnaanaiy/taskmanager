@@ -81,7 +81,7 @@ const Navbar = ({ onSearch }) => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white p-1 rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="px-4 py-2 font-semibold text-gray-800 bg-gray-100 border-b">
-                  {user.email || user.name}
+                  {user.name}
                 </div>
                 <Link
                   to="/profile"

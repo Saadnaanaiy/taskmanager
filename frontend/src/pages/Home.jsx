@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import NoteModal from '../components/NoteModal';
-import { message, Card, Spin, Typography } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
-const { Title, Text } = Typography;
+import { PencilIcon, TrashIcon, PlusIcon } from 'lucide-react';
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -122,19 +120,20 @@ function Home() {
       }
     } catch (error) {
       console.error(error);
-      message.error('Failed to delete note.');
+      toast.error('Failed to delete note.');
     }
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navbar onSearch={setSearchQuery} />
 
       <button
         onClick={() => setIsModalOpen(true)}
-        className="bg-blue-500 hover:bg-blue-600 shadow-lg text-white fixed right-6 bottom-6 font-bold p-4 rounded-full z-50 flex items-center justify-center transition-all duration-300"
+        className="fixed bottom-8 right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        aria-label="Add new note"
       >
-        <PlusOutlined style={{ fontSize: 20 }} />
+        <PlusIcon className="h-6 w-6" />
       </button>
 
       {isModalOpen && (
@@ -147,72 +146,82 @@ function Home() {
         />
       )}
 
-      <div className="p-8">
+      <main className="container mx-auto px-4 py-8">
         {loading ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex h-64 items-center justify-center">
             <Spin size="large" />
           </div>
         ) : filteredNotes.length === 0 ? (
-          <div className="text-center mt-10">
-            <Title level={4}>
+          <div className="mt-16 text-center">
+            <h2 className="mb-2 text-2xl font-bold text-gray-800">
               {notes.length === 0
                 ? 'No Notes Available'
                 : 'No Notes Matching Your Search'}
-            </Title>
-            <Text type="secondary">
+            </h2>
+            <p className="text-gray-600">
               {notes.length === 0
-                ? 'Click the + button to create a new note.'
+                ? 'Click the + button to create your first note'
                 : 'Try adjusting your search terms'}
-            </Text>
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredNotes.map((note) => (
-              <Card
+              <div
                 key={note._id}
-                title={note.title}
-                extra={
-                  <div className="flex space-x-3">
-                    <EditOutlined
-                      onClick={() => onEdit(note)}
-                      style={{ color: '#1890ff', cursor: 'pointer' }}
-                    />
-                    <DeleteOutlined
-                      onClick={() => handleDeleteNote(note._id)}
-                      style={{ color: '#f5222d', cursor: 'pointer' }}
-                    />
-                  </div>
-                }
-                className="shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 rounded-lg"
-                style={{ width: '100%' }}
+                className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl"
               >
-                <h4 className="text-lg p-2 mb-3 bg-amber-100 rounded-full inline-block">
-                  {new Date(note.date).toLocaleDateString()}
-                </h4>
-                <p className="text-gray-700">{note.desc}</p>
-                <div className="mt-3">
-                  <strong>Tags:</strong>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {note.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 text-white rounded-full"
-                        style={{
-                          backgroundColor: tag.color,
-                          fontSize: '12px',
-                          fontWeight: '500',
-                        }}
-                      >
-                        {tag.name}
-                      </span>
-                    ))}
+                <div className="mb-4 flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {note.title}
+                  </h3>
+                  <div className="flex space-x-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    <button
+                      onClick={() => onEdit(note)}
+                      className="rounded-full p-2 text-gray-600 hover:bg-gray-100"
+                      aria-label="Edit note"
+                    >
+                      <PencilIcon className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteNote(note._id)}
+                      className="rounded-full p-2 text-red-600 hover:bg-red-50"
+                      aria-label="Delete note"
+                    >
+                      <TrashIcon className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
-              </Card>
+
+                <span className="mb-4 inline-block rounded-full bg-amber-100 px-3 py-1 text-sm font-medium text-amber-800">
+                  {new Date(note.date).toLocaleDateString()}
+                </span>
+
+                <p className="mb-4 text-gray-600">{note.desc}</p>
+
+                {note.tags && note.tags.length > 0 && (
+                  <div className="mt-4">
+                    <p className="mb-2 text-sm font-semibold text-gray-700">
+                      Tags:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {note.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="rounded-full px-3 py-1 text-xs font-medium text-white"
+                          style={{ backgroundColor: tag.color }}
+                        >
+                          {tag.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
